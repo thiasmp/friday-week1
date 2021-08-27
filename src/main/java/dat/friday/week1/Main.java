@@ -17,17 +17,38 @@ public class Main {
             while (rs.next()) {
                 String name = rs.getString("fname");
                
-                FName.add(name);
-                
+                FName.add(name);    
             }
-
             return FName;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return FName;
-
     }
 
-}
+    static User getUserDetails(int id) throws SQLException {
+          User user = null;
+        try {
+            Connection con = DBconnector.connection();
+            String SQL = "SELECT * FROM usertable WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next())  {
+            user = new User(rs.getInt("id"), rs.getString("fname"),rs.getString("lname"), rs.getString("pw"), rs.getString("phone"), rs.getString("address"));
+            
+            }
+                
+            }
+            
+
+         catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+    }
+
+
